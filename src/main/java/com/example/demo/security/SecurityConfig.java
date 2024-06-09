@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .requestMatchers("/home/**").hasAuthority("ROLE_USER")
                 .requestMatchers("/", "/home/**", "/imgs/**", "/auth/**", "/css/**", "/files/**", "/webjars/**", "/error/**").permitAll()
                 .anyRequest().authenticated()
-            )
+            ) 
             .formLogin(form -> form
                 .loginPage("/auth/login")
                 .defaultSuccessUrl("/home/index")
