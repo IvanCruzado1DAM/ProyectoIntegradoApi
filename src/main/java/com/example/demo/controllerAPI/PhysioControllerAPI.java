@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entity.Player;
 import com.example.demo.entity.User;
 import com.example.demo.model.PlayerModel;
-import com.example.demo.model.TeamModel;
+import com.example.demo.service.impl.MedicalpartServiceImpl;
 import com.example.demo.service.impl.PlayerServiceImpl;
 import com.example.demo.service.impl.UserServiceImpl;
 
 @RestController
-@RequestMapping("/apiDietist")
-public class DietistControllerAPI {
+@RequestMapping("/apiPhysio")
+public class PhysioControllerAPI {
 
     @Autowired
     @Qualifier("userService")
@@ -30,22 +30,30 @@ public class DietistControllerAPI {
     @Autowired
     @Qualifier("playerService")
     private PlayerServiceImpl playerService;
+    
+    @Autowired
+    @Qualifier("medicalpartService")
+    private MedicalpartServiceImpl medicalpartService;
 
-    @PostMapping("/setDiet")
-    public ResponseEntity<?> setDiet(@RequestParam("idDietist") int idDietist, @RequestParam("idPlayer") int idPlayer, @RequestParam("diet") String diet) {
-        User d=userService.loadUserById(idDietist);
+    @PostMapping("/setMedicalPart")
+    public ResponseEntity<?> setMedicalPart(@RequestParam("idPhysioMP") int idPhysioMP, @RequestParam("idTeamMP") int idTeamMP, @RequestParam("idPlayer") int idPlayer, @RequestParam("description") String description, @RequestParam("recoverymethod") String recoverymethod ) {
+        User d=userService.loadUserById(idPhysioMP);
         Player p= playerService.loadPlayerById(idPlayer);
         if (p.getId_team() == d.getId_team_user()) {
-        	playerService.updateDiet(idPlayer, diet);
-            return ResponseEntity.ok(p);
+        	if(d.getRole().equals("ROLE_PHYSIO")) {
+	        	medicalpartService.addMedicalpart(d.getId_user(), idTeamMP, idPlayer, description, recoverymethod );
+	            return ResponseEntity.ok().body("Medical Part created succesfully!");
+        	}else {
+        		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("FORBIDDEN FOR A USER WHO IS NOT A PHYSIO");
+        	}
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You cannot assign a diet to a player who is not on your team");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You cannot assign a medical part to a player who is not on your team");
         }
     }
     
-    @GetMapping("/getPlayersbyTeam")
+    @GetMapping("/getPlayersInjured")
     public List<PlayerModel> getPlayers(@RequestParam("id") int id) {
-        return playerService.listAllPlayersbyIdTeam(id);
+        return playerService.listAllPlayersInjuredbyIdTeam(id);
     }
     
     

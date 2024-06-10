@@ -36,6 +36,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeRequests(auth -> auth
                 .requestMatchers("/apiDietist/**").hasAuthority("ROLE_DIETIST")
+                .requestMatchers("/apiPhysio/**").hasAuthority("ROLE_PHYSIO")
                 .anyRequest().permitAll()
             )
             .addFilterBefore(new JWTAuthorizationFilter(SECRET_KEY), UsernamePasswordAuthenticationFilter.class);

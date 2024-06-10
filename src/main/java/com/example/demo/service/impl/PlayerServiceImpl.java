@@ -239,4 +239,15 @@ public class PlayerServiceImpl implements PlayerService {
 		
 	}
 
+	public List<PlayerModel> listAllPlayersInjuredbyIdTeam(int id) {
+		ModelMapper modelMapper = new ModelMapper();
+		List<Player> playersList = playerRepository.findAll();
+		
+		List<PlayerModel> filtredplayersList =  playersList.stream()
+				 .filter(p -> p.getId_team() == id && p.is_injured()==true)
+				.map(p -> modelMapper.map(p, PlayerModel.class))
+				.collect(Collectors.toList());
+		return filtredplayersList;
+	}
+
 }
