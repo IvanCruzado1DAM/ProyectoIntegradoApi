@@ -232,4 +232,11 @@ public class PlayerServiceImpl implements PlayerService {
 		return false;
 	}
 
+	public void updateDiet(int idPlayer, String diet) {
+		Player p=playerRepository.findById(idPlayer);
+		p.setDiet(diet);
+		playerRepository.save(p);
+		
+	}
+
 }

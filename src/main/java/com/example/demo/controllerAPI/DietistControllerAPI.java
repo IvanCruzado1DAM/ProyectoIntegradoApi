@@ -31,12 +31,14 @@ public class DietistControllerAPI {
         User d=userService.loadUserById(idDietist);
         Player p= playerService.loadPlayerById(idPlayer);
         if (p.getId_team() == d.getId_team_user()) {
-            p.setDiet(diet);
+        	playerService.updateDiet(idPlayer, diet);
             return ResponseEntity.ok(p);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No puedes asignar una dieta a un jugador que no es de tu equipo");
         }
     }
+    
+    
 
     
 

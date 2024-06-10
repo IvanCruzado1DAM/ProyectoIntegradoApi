@@ -42,33 +42,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Order(2)
-    @Bean
-    public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeRequests(authorize -> authorize
-                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                .requestMatchers("/adminshow/**").hasAuthority("ROLE_ADMIN")
-                .requestMatchers("/adminedit/**").hasAuthority("ROLE_ADMIN")
-                .requestMatchers("/home/index").permitAll()
-                .requestMatchers("/home/**").hasAuthority("ROLE_USER")
-                .requestMatchers("/", "/home/**", "/imgs/**", "/auth/**", "/css/**", "/files/**", "/webjars/**", "/error/**").permitAll()
-                .anyRequest().authenticated()
-            ) 
-            .formLogin(form -> form
-                .loginPage("/auth/login")
-                .defaultSuccessUrl("/home/index")
-                .permitAll()
-            )
-            .logout(logout -> logout.permitAll()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login?logout")
-            );
-
-        return http.build();
-    }
-
+    
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
