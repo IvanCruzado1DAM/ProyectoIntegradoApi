@@ -240,6 +240,13 @@ public class PlayerServiceImpl implements PlayerService {
 		playerRepository.save(p);
 		
 	}
+	
+	public void updateTransferible(int idPlayer) {
+		Player p=playerRepository.findById(idPlayer);
+		p.setTransfer_status("Transferible");;
+		playerRepository.save(p);
+		
+	}
 
 	public List<PlayerModel> listAllPlayersInjuredbyIdTeam(int id) {
 		ModelMapper modelMapper = new ModelMapper();

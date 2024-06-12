@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .requestMatchers("/apiPhysio/**").hasAuthority("ROLE_PHYSIO")
                 .requestMatchers("/apiCoach/**").hasAuthority("ROLE_COACH")
                 .requestMatchers("/apiPlayer/**").hasAuthority("ROLE_PLAYER")
+                .requestMatchers("/apiPresident/**").hasAuthority("ROLE_PRESIDENT")
                 .anyRequest().permitAll()
             )
             .addFilterBefore(new JWTAuthorizationFilter(SECRET_KEY), UsernamePasswordAuthenticationFilter.class);
