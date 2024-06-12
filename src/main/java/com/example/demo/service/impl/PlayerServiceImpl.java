@@ -277,5 +277,15 @@ public class PlayerServiceImpl implements PlayerService {
 	    return null;
 	}
 
+	public List<PlayerModel> listAllPlayersToBuy() {
+	    ModelMapper modelMapper = new ModelMapper();
+	    List<Player> playersList = playerRepository.findAll();
+	    return playersList.stream()
+	            .filter(p -> "Transferible".equals(p.getTransfer_status()) || p.getId_team() == 9)
+	            .map(p -> modelMapper.map(p, PlayerModel.class))
+	            .collect(Collectors.toList());
+	}
+
+
 
 }

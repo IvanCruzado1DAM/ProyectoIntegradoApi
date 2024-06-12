@@ -48,6 +48,11 @@ public class PresidentControllerAPI {
         return playerService.listAllPlayersbyIdTeam(id);
     }
     
+    @GetMapping("/getPlayersToBuy")
+    public List<PlayerModel> getPlayersToBuy() {
+        return playerService.listAllPlayersToBuy();
+    }
+    
     
 
     
