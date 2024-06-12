@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.entity.Coach;
-import com.example.demo.entity.Physio;
 import com.example.demo.entity.Player;
-import com.example.demo.entity.Team;
-import com.example.demo.model.CoachModel;
+import com.example.demo.entity.User;
 import com.example.demo.model.PlayerModel;
 import com.example.demo.repository.PlayerRepository;
 import com.example.demo.repository.TeamRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.PlayerService;
 
 @Service("playerService")
@@ -36,6 +34,10 @@ public class PlayerServiceImpl implements PlayerService {
 	@Autowired
 	@Qualifier("teamRepository")
 	private TeamRepository teamRepository;
+	
+	@Autowired
+	@Qualifier("userRepository")
+	private UserRepository userRepository;
 	
 	@Override
 	public List<PlayerModel> listAllPlayers() {
@@ -249,5 +251,24 @@ public class PlayerServiceImpl implements PlayerService {
 				.collect(Collectors.toList());
 		return filtredplayersList;
 	}
+
+	public Player getByUser(int id) {
+	    User u = userRepository.findById(id);
+	    List<PlayerModel> players = listAllPlayersbyIdTeam(u.getId_team_user());
+	    String usernameBeforeAt = u.getUsername().split("@")[0];
+	    char lastChar = usernameBeforeAt.charAt(usernameBeforeAt.length() - 1);	    
+	    if (Character.isDigit(lastChar)) {
+	        int lastDigit = Character.getNumericValue(lastChar);	        	     
+	        for (PlayerModel p : players) {
+	            if (p.getDorsal() == lastDigit) {
+	            	Player player=transformPlayer(p);
+	                return player;
+	            }
+	        }
+	    }
+	    
+	    return null;
+	}
+
 
 }
