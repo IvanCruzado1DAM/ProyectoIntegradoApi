@@ -33,16 +33,19 @@ public class LoginControllerAPI {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam("username") String username, @RequestParam("password") String pwd) {
+        
         User user = userService.findUserByUsername(username);
+        
         if (user != null && userService.checkPassword(pwd, user.getPassword())) {
             String token = getJWTToken(user.getUsername(), user.getRole());
             user.setToken(token);
-            user.setPassword(null);
             return ResponseEntity.ok(user);
         } else {
+            System.out.println("Authentication failed for user: " + username);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
         }
     }
+
 
     private String getJWTToken(String username, String role) {
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(role);
