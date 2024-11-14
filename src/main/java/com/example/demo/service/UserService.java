@@ -21,8 +21,6 @@ public interface UserService {
 	public abstract User transformUser(UserModel userModel);
 
 	public abstract UserModel transformUserModel(User user);
-
-	public abstract int getCurrentUserTeamId(String username);
 	
 	public abstract User loadUserById(int id);
 

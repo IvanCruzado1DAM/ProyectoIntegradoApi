@@ -1,7 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.Physio;
-import com.example.demo.entity.Team;
 import com.example.demo.entity.User;
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.UserRepository;
@@ -113,14 +111,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
 	@Override
 	public User updateUser(UserModel userModel) {
-		User userExistente = userRepository.findById(userModel.getId_user());
+		User userExistente = userRepository.findById(userModel.getIduser());
 		if (userExistente != null) {
 			userExistente.setName(userModel.getName());
 			userExistente.setUsername(userModel.getUsername());
 			if(!userModel.getPassword().equals("")) {
 				userExistente.setPassword(passwordEncoder().encode(userModel.getPassword()));
 			}
-			userExistente.setId_team_user(userModel.getId_team_user());
 
 			return userRepository.save(userExistente);
 		}
@@ -143,16 +140,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	    return "Nombre de usuario desconocido";
 	}
 	
-	@Override
-	public int getCurrentUserTeamId(String username) {
-		User user = userRepository.findByUsername(username);
-		return user.getId_team_user();
-	}
+	
 	
 	
 
 	public String deleteUser(UserModel userModel) {
-		User userExistente = userRepository.findById(userModel.getId_user());
+		User userExistente = userRepository.findById(userModel.getIduser());
 		if (userExistente != null) {
 			userRepository.delete(userExistente);
 		}

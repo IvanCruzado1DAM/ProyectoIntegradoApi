@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.User;
-import com.example.demo.model.TeamModel;
-import com.example.demo.service.impl.TeamServiceImpl;
 import com.example.demo.service.impl.UserServiceImpl;
 import com.example.demo.security.SecurityConfig;
 
@@ -32,9 +30,6 @@ public class LoginControllerAPI {
     @Qualifier("userService")
     private UserServiceImpl userService;
     
-    @Autowired
-    @Qualifier("teamService")
-    private TeamServiceImpl teamService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam("username") String username, @RequestParam("password") String pwd) {
@@ -78,15 +73,11 @@ public class LoginControllerAPI {
         newUser.setName(name);
         newUser.setUsername(username);
         newUser.setPassword(password);
-        newUser.setId_team_user(idTeamUser);
 
         User savedUser = userService.registrar(newUser);
 
         return ResponseEntity.ok(savedUser);
     }
     
-    @GetMapping("/getTeams")
-    public List<TeamModel> getTeams() {
-        return teamService.listAllTeams();
-    }
+   
 }
