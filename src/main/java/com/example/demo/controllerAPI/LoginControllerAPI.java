@@ -66,7 +66,7 @@ public class LoginControllerAPI {
     public ResponseEntity<?> registerUser(@RequestParam("name") String name,
                                           @RequestParam("username") String username,
                                           @RequestParam("password") String password,
-                                          @RequestParam("id_team_user") int idTeamUser) {
+                                          @RequestParam("email") String email) {
         User existingUser = userService.findUserByUsername(username);
         if (existingUser != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario ya existe");
@@ -76,6 +76,7 @@ public class LoginControllerAPI {
         newUser.setName(name);
         newUser.setUsername(username);
         newUser.setPassword(password);
+        newUser.setEmail(email);
 
         User savedUser = userService.registrar(newUser);
 
